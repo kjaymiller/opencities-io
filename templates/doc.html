@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+{% include 'searchbar.html' %}
+{% set data = doc["_source"] %}
+
+<h2>{{data['dataset_name']}}</h2>
+<h3>{{data['portal_name']}}</h3>
+
+<a href="{{data['dataset_url']}}">Visit Dataset</a>
+
+{{data['description']}}
+
+{% endblock %}

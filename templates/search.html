@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Showing Results for {{query}}</h2>
+
+{% include 'searchbar.html' %}
+
+<div>
+    {% for result in results %}
+    {% set id=result['_id'] %}
+    {% set data=result['_source'] %}
+    <div style="margin: 5px; padding: 5px; border: solid 1px #000000; border-radius: 10px;">
+        <h3><a href="/pages/{{id}}">{{data['dataset_name']}}</a></h3>
+        <h4>{{data['portal_name']}}</h4>
+    </div>
+    {% endfor %}
+</div>
+
+
+{% endblock %}
