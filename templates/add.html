@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>Request an Addition</h2>
+<p>You can add a dataset here. We'll review the dataset and then once approved it will be added to our always growing list.</p>
+
+<form action="/add", method="post">
+    {{ form.csrf_token }}
+
+    <div>
+        {{form.dataset_name.label}} {{form.dataset_name(size=80)}}
+    </div>
+    <div>
+        {{form.dataset_url.label}} {{form.dataset_url(size=80)}}
+    </div>
+    <div>
+        {{form.portal_name.label}} {{form.portal_name(size=80)}}
+    <div>
+        {{form.portal_url.label}} {{form.portal_url(size=80)}}
+    </div>
+
+    <h3>Enter all that Apply</h3>
+    <div>
+        {{form.city.label}} {{form.city(size=80)}}
+    </div>
+    <div>
+        {{form.region.label}} {{form.region(size=80)}}
+    </div>
+    <div>
+        {{form.country.label}} {{form.country(size=80)}}
+    </div>
+
+    <h4>It would really help if we had this information</h4>
+    <div>
+        {{form.tags.label}} {{form.tags()}}
+    </div>
+    <div>
+        {{form.description.label}} {{form.description}}
+    </div>
+
+    </div>
+        {{form.license.label}} {{form.license}}
+    </div>
+
+    </div>
+        {{form.submit}}
+    </div>
+
+</form>
+{% endblock %}
