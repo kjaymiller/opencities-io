@@ -9,16 +9,18 @@ from wtforms.fields import Field
 from wtforms.widgets import  TextInput
 from wtforms import validators
 from elasticsearch import Elasticsearch 
-from elasticsearch_dsl import Document, Text
+from dotenv import load_dotenv
 import os
 
+load_dotenv('.env')
 app = Flask(__name__)
-app.config['SECRET_KEY'] = os.environ.get('FLASK_SECRET')
+# app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
 
 username, password = (
         os.environ.get('ELASTIC_USERNAME','elastic'),
         os.environ.get('ELASTICSEARCH_PASSWORD'),
         )
+
 client = Elasticsearch(
         cloud_id=os.environ['CLOUD_ID'],
         # hosts = ['localhost'], for local instance
@@ -28,7 +30,20 @@ client = Elasticsearch(
 
 @app.route('/')
 def index():
-    return render_template('index.html')
+    body = {
+            "size": 10,
+            "query": {
+                "match": {
+                    "status": "approved"
+                    }
+                }
+            }
+
+    results = client.search(index='open-cities-io-data', body=body)['hits']['hits']
+    return render_template(
+            "index.html",
+            results=results,
+    )
 
 
 @app.route('/search')
@@ -141,4 +156,4 @@ def add():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True, host='0.0.0.0', port=int(os.environ.get('PORT', 8080)))

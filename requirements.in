@@ -1,6 +1,5 @@
-black
 elasticsearch
-elasticsearch-dsl
 flask
 flask-wtf
 gunicorn
+python-dotenv
