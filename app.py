@@ -1,4 +1,6 @@
-from flask import Flask, render_template, request, redirect
+from elasticsearch import Elasticsearch 
+from elasticsearch_dsl import connections, Document, Text, Date
+from flask import Flask, render_template, request, redirect, flash
 from flask_wtf import FlaskForm
 from wtforms import (
         StringField,
@@ -8,13 +10,12 @@ from wtforms import (
 from wtforms.fields import Field
 from wtforms.widgets import  TextInput
 from wtforms import validators
-from elasticsearch import Elasticsearch 
 from dotenv import load_dotenv
 import os
 
 load_dotenv('.env')
 app = Flask(__name__)
-# app.config['SECRET_KEY'] = os.environ['SECRET_KEY']
+app.config['SECRET_KEY'] = os.environ['FLASK_SECRET']
 
 username, password = (
         os.environ.get('ELASTIC_USERNAME','elastic'),
@@ -55,10 +56,10 @@ def search():
                 "must": [
                     {"multi_match": {
                         "query": query,
-                        "fields": ["city^2", "region^2", "portal_name", "datasets_name^3"]}},
+                        "fields": ["city^2", "region^2", "portal_name", "dataset_name^3"]}},
                 ],
             "filter": [
-                {"term": {"status": "published"}},
+                {"term": {"status": "approved"}},
                 ] 
             }
         }
@@ -125,8 +126,26 @@ class DataEntry(FlaskForm):
     country = StringField('Country') 
     tags = BetterTagListField('Tags')
     description = TextAreaField('Description')
-    license = StringField('Liscense')
+    license = StringField('License')
     submit = SubmitField('Submit')
+
+
+class NewDataSet(Document):
+    dataset_name = Text()
+    dataset_url = Text()
+    portal_url = Text()
+    portal_name = Text()
+    city = Text()
+    region = Text()
+    country = Text() 
+    tags = Text()
+    description = Text()
+    license = Text()
+    status = Text()
+
+    class Index():
+        name = 'open-cities-io-data'
+        using = client
 
 
 @app.route('/add', methods=['GET', 'POST'])
@@ -134,24 +153,26 @@ def add():
     form = DataEntry(request.form)
 
     if request.method=="POST" and form.validate():
-        body = {
-                "portal_name": form.portal_name.data,
-                "portal_url": form.portal_url.data,
-                "dataset_name": form.dataset_name.data,
-                "dataset_url": form.dataset_url.data,
-                "city": form.city.data,
-                "region": form.region.data,
-                "country": form.country.data,
-                "tags": form.tags.data,
-                "description": form.description.data,
-                "status": "pending"
-                }
+        new_dataset = NewDataSet( 
+                portal_name=form.portal_name.data,
+                portal_url=form.portal_url.data,
+                dataset_name=form.dataset_name.data,
+                dataset_url=form.dataset_url.data,
+                city=form.city.data,
+                region=form.region.data,
+                country=form.country.data,
+                tags=form.tags.data,
+                description=form.description.data,
+                status="pending",
+                )
 
-        flash.success('Your request has been logged for review')
-        results = client.add('', body)
-        return render_template('/', form=form)
+        new_dataset.save()
+
+        return render_template('/success.html', form=form)
 
     else:
+        if request.method == "POST":
+            flash("I'm Sorry but an error has occured", "error")
         return render_template('add.html', form=form)
 
 

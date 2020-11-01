@@ -1,50 +1,60 @@
 {% extends 'base.html' %}
 {% block content %}
+{% for message in get_flashed_messages() %}
+{{ message}}
 
-<h2>Request an Addition</h2>
+{% endfor %}
+<div class="add-form container m-3 p-3">
+<h2 class="text-3xl text-gray-800 font-bold">Request an Addition</h2>
+
 <p>You can add a dataset here. We'll review the dataset and then once approved it will be added to our always growing list.</p>
 
+<div class="m-5 border p-4 shadow rounded">
 <form action="/add", method="post">
     {{ form.csrf_token }}
 
-    <div>
+    <div class="font-bold my-2">
         {{form.dataset_name.label}} {{form.dataset_name(size=80)}}
     </div>
-    <div>
+    <div class="font-bold my-2">
         {{form.dataset_url.label}} {{form.dataset_url(size=80)}}
     </div>
-    <div>
+    <div class="font-bold my-2">
         {{form.portal_name.label}} {{form.portal_name(size=80)}}
-    <div>
+    </div>
+    <div class="font-bold my-2">
         {{form.portal_url.label}} {{form.portal_url(size=80)}}
     </div>
 
-    <h3>Enter all that Apply</h3>
-    <div>
+    <h3 class="mt-5 text-xl">Enter all that Apply</h3>
+
+    <div class="font-bold my-2">
         {{form.city.label}} {{form.city(size=80)}}
     </div>
-    <div>
+    <div class="font-bold my-2">
         {{form.region.label}} {{form.region(size=80)}}
     </div>
-    <div>
+    <div class="font-bold my-2">
         {{form.country.label}} {{form.country(size=80)}}
     </div>
 
-    <h4>It would really help if we had this information</h4>
-    <div>
+    <h3 class="mt-5 text-xl">It would really help if we had this information</h4>
+    <div class="font-bold my-2">
         {{form.tags.label}} {{form.tags()}}
     </div>
-    <div>
+    <div class="font-bold my-2">
         {{form.description.label}} {{form.description}}
     </div>
 
-    </div>
+    <div class="font-bold my-2">
         {{form.license.label}} {{form.license}}
     </div>
 
-    </div>
+    <div>
         {{form.submit}}
     </div>
 
 </form>
+</div>
+</div>
 {% endblock %}

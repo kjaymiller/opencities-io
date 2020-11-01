@@ -1,5 +1,6 @@
 {
   "dependencies": {
+    "autoprefixer": "^9.8.6",
     "tailwindcss": "^1.9.6"
   }
 }

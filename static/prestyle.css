@@ -1,0 +1,26 @@
+@tailwind base;
+    a {
+      @apply underline;
+    }
+@tailwind components;
+@tailwind utilities; 
+
+    .add-form input {
+      @apply border;
+      @apply border-gray-200;
+      @apply mx-4;
+      @apply p-2;
+      @apply rounded;
+      @apply shadow;
+      @apply w-full;
+    }
+
+    .add-form textarea {
+      @apply p-2;
+      @apply mx-4;
+      @apply border;
+      @apply border-gray-200;
+      @apply w-full;
+      @apply rounded;
+      @apply shadow;
+    }
