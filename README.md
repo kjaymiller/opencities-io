@@ -3,6 +3,16 @@
 
 ## Stack
 - Flask
+- Elasticsearch
+
+## Contributions
+- This is a project that is designed to help folks discover content that can help them present relevant and interesting information. If you would like to add a resource. you can do it through the site.
+
+To add a contribution to the codebase:
+
+1. Create an Issue
+2. Fork the Repo and Developer Your Changes Locally
+3. Submit a Pull Request
 
 ## License
 [MIT License]
