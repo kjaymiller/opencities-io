@@ -1,0 +1,11 @@
+<div class="container border rounded-lg shadow-lg p-4">
+    <h3 class="text-2g my-2">{{data['portal_name']}}
+        <span class="text-sm mx-2 p-2 borded bg-gray-200">
+            <a href="{{data['portal_url']}}" target="blank">Visit Portal</a></span><span class="text-sm mx-2 p-2 borded bg-gray-200"><a href="{{ url_for('get_portal', portal_name=data['portal_name']) }}">View Others</a></span></h3>
+    <div class="flex items-baseline">
+    <h2 class="text-4xl my-2 mr-2">{{data['dataset_name']}}</h2>
+        <span class="text-md">
+            <a class="no-underline" href="{{data['dataset_url']}}">🔗</a>
+        </span>
+    </div>
+</div>

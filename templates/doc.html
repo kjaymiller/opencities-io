@@ -3,12 +3,28 @@
 {% block content %}
 {% include 'searchbar.html' %}
 {% set data = doc["_source"] %}
+<div class="container m-4">
+{% include 'doc_header.html' %}
 
-<h2>{{data['dataset_name']}}</h2>
-<h3>{{data['portal_name']}}</h3>
+{% if data['status'] == 'pending' %}
+<div class="m-5">
+    {% include 'approve.html' %}
+{% endif %}
 
-<a href="{{data['dataset_url']}}">Visit Dataset</a>
+<div class="m-5">
+    {{data['description']}}
+</div>
 
-{{data['description']}}
+<h3 class="text-2xl underline my-3">Other Projects</h3>
+{% if data['projects'] %}
+     {% for project in data['projects'] %}
+         {{data['projects']['name']}}, {{data['projects'].url}}
+    {% endfor %}
+{% else %}
+<h4 class="text-lg">No Projects Yet</h4>
+<a class="">Add Your Project</a>
+{% endif %}
+</div>
+
 
 {% endblock %}

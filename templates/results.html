@@ -1,21 +1,16 @@
-<div class="my-4 
-    flex justify-around">
+<div class="m-4">
+    {% if not results %}
+    <div class="border p-4">
+        <h1 class="text-3xl">No Results at This Time 😢</h1>
+    </div>
+    {% endif %}
     {% for result in results %}
     {% set id=result['_id'] %}
     {% set data=result['_source'] %}
-    <div class="m-2 p-2 border rounded shadow">
-        <h3 class="text-xl"><a href="/pages/{{id}}">{{data['dataset_name']}}</a></h3>
-        <h4 class="text-md">{{data['portal_name']}}</h4>
-
-        <tags>
-        <div class="flex">
-        <h5 class="shadow-lg px-2 rounded-l text-sm bg-gray-600 hover:bg-gray-400 hover:text-gray-800">{{data['city']}}</h5>
-        <h5 class="shadow-lg px-2 rounded-r text-sm bg-green-200 hover:bg-gray-400 hover:text-gray-800">{{data['region']}}</h5>
-        {% for tag in data['tags'] %}
-        <h5 class="mx-1 px-2 shadow rounded text-sm border border-blue-300 text-blue-700 hover:bg-blue-600 hover:text-gray-300">{{tag}}</h5>
-        {% endfor %}
-        </div>
-        </tags>
+    <div class="w-1/2 m-2 p-2 border rounded shadow">
+        <h5 class="shadow-lg p-2 rounded text-sm bg-gray-400 hover:bg-gray-500 hover:text-gray-800">{{data['city']}}, {{data['region']}}</h5>
+        <h3 class="text-xl"><a href="/portal/{{data['dataset_name']}}">{{data['dataset_name']}}</a></h3>
+        <h4 class="text-md"><a href="/pages/{{id}}">{{data['title']}}</a></h4>
     </div>
     {% endfor %}
-</div>
+    </div>
